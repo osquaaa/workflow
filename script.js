@@ -1140,7 +1140,7 @@
 
   activeWorkoutContainer.addEventListener("click", (e) => {
     const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
 
     const action = target.dataset.action;
     if (action === "finish-workout") {
@@ -1163,7 +1163,7 @@
 
   activeWorkoutContainer.addEventListener("click", (e) => {
     const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
 
     const btn = target.closest(".set-complete-btn");
     if (!btn) return;
@@ -1181,7 +1181,7 @@
 
   activeWorkoutContainer.addEventListener("click", (e) => {
     const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
     const btn = target.closest(".stepper-button");
     if (!btn) return;
 
@@ -1207,7 +1207,7 @@
 
   quickStartList.addEventListener("click", (e) => {
     const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
     const chip = target.closest(".chip");
     if (!chip) return;
     const exerciseId = chip.dataset.exerciseId;
@@ -1216,7 +1216,7 @@
 
   workoutListEl.addEventListener("click", (e) => {
     const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
 
     const startBtn = target.closest("[data-action='start-workout']");
     if (startBtn) {
@@ -1265,7 +1265,7 @@
   if (goalsEditorEl) {
     goalsEditorEl.addEventListener("click", (e) => {
       const target = e.target;
-      if (!(target instanceof HTMLElement)) return;
+      if (!(target instanceof Element)) return;
       const btn = target.closest(".stepper-button");
       if (!btn) return;
       const field = btn.dataset.goalField;
