@@ -1,4 +1,43 @@
 (function () {
+  const THEME_KEY = "workoutFlowTheme";
+  const root = document.documentElement;
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+
+  function applyTheme(theme) {
+    if (theme === "dark") {
+      root.classList.add("theme-dark");
+    } else {
+      root.classList.remove("theme-dark");
+    }
+    if (themeToggleBtn) {
+      themeToggleBtn.setAttribute("data-theme", theme);
+    }
+  }
+
+  function loadTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === "dark" || saved === "light") {
+      applyTheme(saved);
+    } else {
+      // по умолчанию светлая
+      applyTheme("light");
+    }
+  }
+
+  function toggleTheme() {
+    const isDark = root.classList.contains("theme-dark");
+    const next = isDark ? "light" : "dark";
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+  }
+
+  loadTheme();
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", toggleTheme);
+  }
+})();
+(function () {
   const STORAGE_KEY = "workoutFlowState.v1";
 
   const defaultExercises = [
@@ -279,7 +318,7 @@
     if (!aw) {
       activeWorkoutContainer.classList.add("card-empty");
       let html =
-        "<p>Нет активной тренировки. Выберите пресет или создайте свою.</p>";
+        "<p>Сейчас отдыхаешь — выбери быстрый старт ниже или собери свою тренировку.</p>";
       const goals = state.goals || defaultGoals;
       const weekly = computeWeeklyStats();
       const mainExercise =
@@ -352,7 +391,8 @@
       html += '<div class="sets-list">';
 
       sets.forEach((set, setIndex) => {
-        html += '<div class="set-row">';
+        const rowCompletedClass = set.completed ? " set-row-completed" : "";
+        html += `<div class="set-row${rowCompletedClass}">`;
         html += `<div class="set-label">Сет ${setIndex + 1}</div>`;
         html += '<div class="steppers">';
 
@@ -388,10 +428,14 @@
     html += "</div>";
 
     html += '<div class="active-footer">';
+    html += '<div class="active-footer-controls">';
     html +=
-      '<button class="btn btn-secondary" data-action="add-set">+ сет</button>';
+      '<button class="btn btn-secondary btn-secondary-compact" data-action="remove-set">- сет</button>';
     html +=
-      '<button class="btn btn-primary" data-action="finish-workout">Завершить</button>';
+      '<button class="btn btn-secondary btn-secondary-compact" data-action="add-set">+ сет</button>';
+    html += "</div>";
+    html +=
+      '<button class="btn btn-primary active-footer-finish" data-action="finish-workout">Завершить</button>';
     html += "</div>";
 
     activeWorkoutContainer.innerHTML = html;
@@ -432,7 +476,8 @@
     if (!state.workouts.length) {
       const empty = document.createElement("div");
       empty.className = "card card-empty";
-      empty.textContent = "Пока нет сохранённых тренировок.";
+      empty.textContent =
+        "Сохрани первую тренировку, чтобы запускать её потом в один тап.";
       workoutListEl.appendChild(empty);
       return;
     }
@@ -482,7 +527,7 @@
       const empty = document.createElement("div");
       empty.className = "card card-empty";
       empty.textContent =
-        "После завершения тренировок здесь появится история по датам и объёму.";
+        "Как только завершишь первую тренировку, здесь появится лента с датами, объёмом и лучшими сетами.";
       historyListEl.appendChild(empty);
       return;
     }
@@ -727,7 +772,7 @@
       const empty = document.createElement("div");
       empty.className = "card card-empty";
       empty.textContent =
-        "Как только появятся тренировки, здесь будет разбивка по упражнениям и объёмам.";
+        "Проведи хотя бы пару тренировок — и тут появится разбивка по упражнениям и объёму.";
       exerciseStatsEl.appendChild(empty);
       return;
     }
@@ -923,13 +968,17 @@
   function handleSaveWorkout() {
     const name = workoutNameInput.value.trim();
     if (!name) {
-      alert("Дай тренировке понятное название.");
+      alert(
+        "Дай тренировке короткое понятное название — например «Турник + брусья»."
+      );
       return;
     }
 
     const rows = Array.from(exerciseRowsContainer.children);
     if (!rows.length) {
-      alert("Добавь хотя бы одно упражнение.");
+      alert(
+        "Добавь хотя бы одно упражнение — без него тренировка не сохранится."
+      );
       return;
     }
 
@@ -944,7 +993,9 @@
     }
 
     if (!exercises.length) {
-      alert("Добавь хотя бы одно упражнение.");
+      alert(
+        "Добавь хотя бы одно упражнение — без него тренировка не сохранится."
+      );
       return;
     }
 
@@ -1054,7 +1105,21 @@
     saveState();
     renderActiveWorkout();
   }
+  function removeSetFromActiveWorkout() {
+    const aw = state.activeWorkout;
+    if (!aw) return;
+    if (!aw.items.length) return;
 
+    const first = aw.items[0];
+    if (!first.sets || first.sets.length <= 1) {
+      // не даём удалить последний сет, чтобы тренировка не разваливалась
+      return;
+    }
+
+    first.sets.pop();
+    saveState();
+    renderActiveWorkout();
+  }
   function finishActiveWorkout() {
     const aw = state.activeWorkout;
     if (!aw) return;
@@ -1089,7 +1154,7 @@
   function stopActiveWorkoutWithoutSave() {
     if (!state.activeWorkout) return;
     const confirmStop = confirm(
-      "Сбросить текущую тренировку без сохранения в историю?"
+      "Сбросить текущую тренировку без сохранения? Прогресс за эту сессию пропадёт."
     );
     if (!confirmStop) return;
     state.activeWorkout = null;
@@ -1153,6 +1218,10 @@
     }
     if (action === "add-set") {
       addSetToActiveWorkout();
+      return;
+    }
+    if (action === "remove-set") {
+      removeSetFromActiveWorkout();
       return;
     }
     if (action === "repeat-last-workout") {
@@ -1314,7 +1383,7 @@
   if (resetDataBtn) {
     resetDataBtn.addEventListener("click", () => {
       const confirmed = confirm(
-        "Сбросить все данные (история, прогресс, тренировки)?"
+        "Точно удалить историю, прогресс и все сохранённые тренировки? Отменить это действие нельзя."
       );
       if (!confirmed) return;
       localStorage.removeItem(STORAGE_KEY);
