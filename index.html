@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workout Flow</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="logo">
+          <div class="logo-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="9" width="3" height="6" rx="1.2"></rect>
+              <rect x="8" y="6" width="3" height="12" rx="1.2"></rect>
+              <rect x="13" y="6" width="3" height="12" rx="1.2"></rect>
+              <rect x="18" y="9" width="3" height="6" rx="1.2"></rect>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <span class="logo-title">Workout Flow</span>
+            <span class="logo-subtitle">умный воркаут-трекер</span>
+          </div>
+        </div>
+        <button
+          id="resetDataBtn"
+          class="icon-button"
+          title="Сбросить все данные"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M9 3h6l1 3h3a1 1 0 0 1 0 2h-1.1l-1 11a2 2 0 0 1-2 1.8H9.1a2 2 0 0 1-2-1.8l-1-11H5a1 1 0 0 1 0-2h3l1-3Zm1.2 3-0.4 1.5a1 1 0 0 1-1 .8H7.2l0.9 10h7.8l0.9-10h-1.6a1 1 0 0 1-1-.8L13.8 6h-3.6Z"
+            />
+          </svg>
+        </button>
+      </header>
+
+      <main class="app-main">
+        <!-- WORKOUT SCREEN -->
+        <section id="screen-workout" class="screen screen-active">
+          <section class="block">
+            <div class="block-header">
+              <h2>Активная тренировка</h2>
+              <span class="block-tag" id="todayLabel"></span>
+            </div>
+            <div id="activeWorkoutContainer" class="card card-empty">
+              <p>Нет активной тренировки. Выберите пресет или создайте свою.</p>
+            </div>
+          </section>
+
+          <section class="block">
+            <div class="block-header">
+              <h2>Быстрый старт</h2>
+            </div>
+            <div id="quickStartList" class="chips-row">
+              <!-- filled by JS -->
+            </div>
+          </section>
+
+          <section class="block">
+            <div class="block-header block-header-row">
+              <div>
+                <h2>Мои тренировки</h2>
+                <p class="block-caption">Сохраняйте полные связки упражнений</p>
+              </div>
+              <button id="openCreateWorkout" class="btn btn-ghost">
+                <span class="btn-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5Z"
+                    />
+                  </svg>
+                </span>
+                <span>Создать</span>
+              </button>
+            </div>
+            <div id="workoutList" class="cards-column">
+              <!-- filled by JS -->
+            </div>
+          </section>
+        </section>
+
+        <!-- HISTORY SCREEN -->
+        <section id="screen-history" class="screen">
+          <section class="block">
+            <div class="block-header">
+              <h2>История</h2>
+            </div>
+            <div id="historyList" class="cards-column">
+              <!-- sessions -->
+            </div>
+          </section>
+        </section>
+
+        <!-- STATS SCREEN -->
+        <section id="screen-stats" class="screen">
+          <section class="block">
+            <div class="block-header">
+              <h2>Сводка</h2>
+            </div>
+            <div id="statsSummary" class="stats-grid">
+              <!-- summary cards -->
+            </div>
+          </section>
+
+          <section class="block">
+            <div class="block-header block-header-row">
+              <div>
+                <h2>Цели</h2>
+                <p class="block-caption">Неделя и главное упражнение</p>
+              </div>
+              <button id="toggleGoalsEdit" class="btn btn-ghost-small">
+                <span class="btn-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 4a1 1 0 0 1 .92.61l.7 1.61a4.5 4.5 0 0 1 1.35.78l1.73-.4a1 1 0 0 1 1.08.46l1.2 2.07a1 1 0 0 1-.16 1.2l-1.22 1.36a4.5 4.5 0 0 1 0 1.56l1.22 1.36a1 1 0 0 1 .16 1.2l-1.2 2.07a1 1 0 0 1-1.08.46l-1.73-.4a4.5 4.5 0 0 1-1.35.78l-.7 1.61A1 1 0 0 1 12 20h-2a1 1 0 0 1-.92-.61l-.7-1.61a4.5 4.5 0 0 1-1.35-.78l-1.73.4a1 1 0 0 1-1.08-.46l-1.2-2.07a1 1 0 0 1 .16-1.2l1.22-1.36a4.5 4.5 0 0 1 0-1.56L2.18 9.33a1 1 0 0 1-.16-1.2l1.2-2.07a1 1 0 0 1 1.08-.46l1.73.4a4.5 4.5 0 0 1 1.35-.78l.7-1.61A1 1 0 0 1 10 4h2Zm-1 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                    />
+                  </svg>
+                </span>
+                <span>Настроить</span>
+              </button>
+            </div>
+            <div id="goalsView" class="goals-grid">
+              <!-- goals cards -->
+            </div>
+            <div id="goalsEditor" class="goals-editor hidden">
+              <div class="goals-editor-row">
+                <span class="goals-editor-label">Тренировок в неделю</span>
+                <div class="stepper-group">
+                  <button
+                    class="stepper-button"
+                    data-goal-field="workoutsPerWeek"
+                    data-delta="-1"
+                  >
+                    -
+                  </button>
+                  <span class="stepper-value" data-goal-value="workoutsPerWeek"
+                    >3</span
+                  >
+                  <span class="goals-editor-unit">раз</span>
+                  <button
+                    class="stepper-button"
+                    data-goal-field="workoutsPerWeek"
+                    data-delta="1"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div class="goals-editor-row">
+                <span class="goals-editor-label">Повторов в неделю</span>
+                <div class="stepper-group">
+                  <button
+                    class="stepper-button"
+                    data-goal-field="totalRepsPerWeek"
+                    data-delta="-20"
+                  >
+                    -
+                  </button>
+                  <span class="stepper-value" data-goal-value="totalRepsPerWeek"
+                    >300</span
+                  >
+                  <span class="goals-editor-unit">повт.</span>
+                  <button
+                    class="stepper-button"
+                    data-goal-field="totalRepsPerWeek"
+                    data-delta="20"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div class="goals-editor-row">
+                <span class="goals-editor-label">Главное упражнение</span>
+              </div>
+              <div class="goals-editor-row goals-editor-row--exercise">
+                <select id="goalMainExerciseSelect"></select>
+                <div class="stepper-group">
+                  <button
+                    class="stepper-button"
+                    data-goal-field="mainExerciseRepsPerWeek"
+                    data-delta="-10"
+                  >
+                    -
+                  </button>
+                  <span
+                    class="stepper-value"
+                    data-goal-value="mainExerciseRepsPerWeek"
+                    >80</span
+                  >
+                  <span class="goals-editor-unit">повт./нед</span>
+                  <button
+                    class="stepper-button"
+                    data-goal-field="mainExerciseRepsPerWeek"
+                    data-delta="10"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="block">
+            <div class="block-header">
+              <h2>Прогресс по упражнениям</h2>
+            </div>
+            <div id="exerciseStats" class="cards-column">
+              <!-- per exercise -->
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <nav class="bottom-nav">
+        <button class="nav-btn nav-btn-active" data-target="screen-workout">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="9" width="3" height="6" rx="1.2"></rect>
+              <rect x="8" y="6" width="3" height="12" rx="1.2"></rect>
+              <rect x="13" y="6" width="3" height="12" rx="1.2"></rect>
+              <rect x="18" y="9" width="3" height="6" rx="1.2"></rect>
+            </svg>
+          </span>
+          <span>Тренировка</span>
+        </button>
+        <button class="nav-btn" data-target="screen-history">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M5 4a1 1 0 0 1 1 1v1.1A8 8 0 1 1 4 12a1 1 0 0 1 2 0 6 6 0 1 0 1.8-4.3H9a1 1 0 0 1 0 2H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm7 4a1 1 0 0 1 1 1v3.2l2 1.2a1 1 0 1 1-1 1.7l-2.5-1.5A1 1 0 0 1 11 13V9a1 1 0 0 1 1-1Z"
+              />
+            </svg>
+          </span>
+          <span>История</span>
+        </button>
+        <button class="nav-btn" data-target="screen-stats">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6 11a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1Zm6-4a1 1 0 0 1 1 1v10a1 1 0 0 1-2 0V8a1 1 0 0 1 1-1Zm6-4a1 1 0 0 1 1 1v14a1 1 0 0 1-2 0V4a1 1 0 0 1 1-1Z"
+              />
+            </svg>
+          </span>
+          <span>Статистика</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- MODAL: CREATE / EDIT WORKOUT -->
+    <div id="workoutModalBackdrop" class="modal-backdrop hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="workoutModalTitle">Новая тренировка</h2>
+          <button
+            id="closeWorkoutModal"
+            class="icon-button"
+            aria-label="Закрыть"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6.3 6.3a1 1 0 0 1 1.4 0L12 10.6l4.3-4.3a1 1 0 0 1 1.4 1.4L13.4 12l4.3 4.3a1 1 0 0 1-1.4 1.4L12 13.4l-4.3 4.3a1 1 0 0 1-1.4-1.4L10.6 12 6.3 7.7a1 1 0 0 1 0-1.4Z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <label class="field">
+            <span class="field-label">Название тренировки</span>
+            <input
+              id="workoutNameInput"
+              type="text"
+              placeholder="Например: Турник + брусья"
+            />
+          </label>
+
+          <div class="field">
+            <div class="field-label-row">
+              <span class="field-label">Упражнения</span>
+              <button id="addExerciseRow" class="btn btn-ghost-small">
+                <span class="btn-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 0 1 0 2h-6v6a1 1 0 0 1-2 0v-6H5a1 1 0 0 1 0-2h6V5Z"
+                    />
+                  </svg>
+                </span>
+                <span>Добавить</span>
+              </button>
+            </div>
+            <p class="block-caption" style="margin-bottom: 6px">
+              Выбери упражнение и укажи количество сетов и повторений для него.
+            </p>
+            <div class="exercise-rows-header">
+              <span>Упражнение</span>
+              <span>Сеты</span>
+              <span>Повторы</span>
+              <span></span>
+            </div>
+            <div id="exerciseRows" class="exercise-rows">
+              <!-- rows -->
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="saveWorkoutBtn" class="btn btn-primary">Сохранить</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
