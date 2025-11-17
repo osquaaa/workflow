@@ -41,6 +41,7 @@
   const STORAGE_KEY = "workoutFlowState.v1";
 
   const defaultExercises = [
+    // Воркаут / свой вес
     {
       id: "pullups",
       name: "Подтягивания",
@@ -78,7 +79,7 @@
     },
     {
       id: "squats",
-      name: "Приседания",
+      name: "Приседания с весом тела",
       type: "reps",
       defaultSets: 4,
       defaultReps: 20,
@@ -90,48 +91,194 @@
       defaultSets: 3,
       defaultReps: 40,
     },
+
+    // База зала
+    {
+      id: "barbell-squat",
+      name: "Присед со штангой",
+      type: "reps",
+      defaultSets: 5,
+      defaultReps: 5,
+    },
+    {
+      id: "deadlift",
+      name: "Становая тяга",
+      type: "reps",
+      defaultSets: 5,
+      defaultReps: 5,
+    },
+    {
+      id: "bench-press",
+      name: "Жим лёжа",
+      type: "reps",
+      defaultSets: 5,
+      defaultReps: 5,
+    },
+    {
+      id: "incline-bench",
+      name: "Жим лёжа под углом",
+      type: "reps",
+      defaultSets: 4,
+      defaultReps: 8,
+    },
+    {
+      id: "ohp",
+      name: "Жим стоя (штанга)",
+      type: "reps",
+      defaultSets: 4,
+      defaultReps: 6,
+    },
+    {
+      id: "row-barbell",
+      name: "Тяга штанги в наклоне",
+      type: "reps",
+      defaultSets: 4,
+      defaultReps: 8,
+    },
+    {
+      id: "lat-pulldown",
+      name: "Тяга верхнего блока",
+      type: "reps",
+      defaultSets: 4,
+      defaultReps: 10,
+    },
+    {
+      id: "seated-row",
+      name: "Тяга горизонтального блока",
+      type: "reps",
+      defaultSets: 4,
+      defaultReps: 10,
+    },
+
+    // Ноги (зал)
+    {
+      id: "leg-press",
+      name: "Жим ногами в тренажёре",
+      type: "reps",
+      defaultSets: 4,
+      defaultReps: 10,
+    },
+    {
+      id: "leg-curl",
+      name: "Сгибания ног лёжа",
+      type: "reps",
+      defaultSets: 3,
+      defaultReps: 12,
+    },
+    {
+      id: "leg-extension",
+      name: "Разгибания ног",
+      type: "reps",
+      defaultSets: 3,
+      defaultReps: 12,
+    },
+    {
+      id: "calf-raise",
+      name: "Подъёмы на икры",
+      type: "reps",
+      defaultSets: 4,
+      defaultReps: 15,
+    },
+
+    // Руки / плечи
+    {
+      id: "barbell-curl",
+      name: "Подъём штанги на бицепс",
+      type: "reps",
+      defaultSets: 4,
+      defaultReps: 10,
+    },
+    {
+      id: "dumbbell-curl",
+      name: "Сгибания гантелей на бицепс",
+      type: "reps",
+      defaultSets: 3,
+      defaultReps: 12,
+    },
+    {
+      id: "triceps-pushdown",
+      name: "Разгибания на блоке (трицепс)",
+      type: "reps",
+      defaultSets: 3,
+      defaultReps: 12,
+    },
+    {
+      id: "skullcrusher",
+      name: "Французский жим",
+      type: "reps",
+      defaultSets: 3,
+      defaultReps: 10,
+    },
+    {
+      id: "lateral-raise",
+      name: "Махи гантелями в стороны",
+      type: "reps",
+      defaultSets: 3,
+      defaultReps: 15,
+    },
+    {
+      id: "face-pull",
+      name: "Тяга к лицу (блок)",
+      type: "reps",
+      defaultSets: 3,
+      defaultReps: 15,
+    },
   ];
 
   const defaultWorkouts = [
     {
-      id: "bars-basic",
-      name: "База: турник + брусья",
+      id: "fullbody-basic",
+      name: "Full body база (зал)",
+      exercises: [
+        { exerciseId: "barbell-squat", sets: 5, reps: 5 },
+        { exerciseId: "bench-press", sets: 5, reps: 5 },
+        { exerciseId: "row-barbell", sets: 4, reps: 8 },
+      ],
+    },
+    {
+      id: "upper-push",
+      name: "Верх: грудь + плечи + трицепс",
+      exercises: [
+        { exerciseId: "bench-press", sets: 4, reps: 6 },
+        { exerciseId: "incline-bench", sets: 3, reps: 8 },
+        { exerciseId: "ohp", sets: 3, reps: 8 },
+        { exerciseId: "triceps-pushdown", sets: 3, reps: 12 },
+      ],
+    },
+    {
+      id: "upper-pull",
+      name: "Верх: спина + бицепс",
+      exercises: [
+        { exerciseId: "deadlift", sets: 3, reps: 5 },
+        { exerciseId: "lat-pulldown", sets: 4, reps: 8 },
+        { exerciseId: "seated-row", sets: 3, reps: 10 },
+        { exerciseId: "barbell-curl", sets: 3, reps: 10 },
+      ],
+    },
+    {
+      id: "lower-body",
+      name: "Низ: ноги + корпус",
+      exercises: [
+        { exerciseId: "barbell-squat", sets: 4, reps: 6 },
+        { exerciseId: "leg-press", sets: 3, reps: 10 },
+        { exerciseId: "leg-curl", sets: 3, reps: 12 },
+        { exerciseId: "plank", sets: 3, reps: 40 },
+      ],
+    },
+    {
+      id: "street-workout",
+      name: "Улица: турник + брусья",
       exercises: [
         { exerciseId: "pullups", sets: 5, reps: 5 },
         { exerciseId: "dips", sets: 4, reps: 8 },
-      ],
-    },
-    {
-      id: "pullups-mix-60",
-      name: "Турник микс 60 + отжимания",
-      exercises: [
-        { exerciseId: "pullups-wide", sets: 2, reps: 6 },
-        { exerciseId: "pullups", sets: 2, reps: 5 },
-        { exerciseId: "chinups", sets: 2, reps: 5 },
-        { exerciseId: "pushups", sets: 3, reps: 10 },
-      ],
-    },
-    {
-      id: "push-upper",
-      name: "Грудь + трицепс",
-      exercises: [
-        { exerciseId: "pushups", sets: 4, reps: 20 },
-        { exerciseId: "dips", sets: 3, reps: 8 },
-      ],
-    },
-    {
-      id: "legs-core",
-      name: "Ноги + корпус",
-      exercises: [
-        { exerciseId: "squats", sets: 4, reps: 20 },
-        { exerciseId: "plank", sets: 3, reps: 40 },
+        { exerciseId: "pushups", sets: 3, reps: 15 },
       ],
     },
   ];
   const defaultGoals = {
     workoutsPerWeek: 3,
-    totalRepsPerWeek: 300,
-    mainExerciseId: "pullups",
+    totalRepsPerWeek: 350,
+    mainExerciseId: "barbell-squat",
     mainExerciseRepsPerWeek: 80,
   };
 
@@ -743,7 +890,7 @@
       {
         label: "За 30 дней",
         value: workoutsLast30,
-        helper: workoutsLast30 ? "держишь режим" : "пора залететь на площадку",
+        helper: workoutsLast30 ? "держишь режим" : "пора в зал или на площадку",
       },
       {
         label: "Сумма повторений",
@@ -969,7 +1116,7 @@
     const name = workoutNameInput.value.trim();
     if (!name) {
       alert(
-        "Дай тренировке короткое понятное название — например «Турник + брусья»."
+        "Дай тренировке короткое понятное название — например «Жим + тяга»."
       );
       return;
     }
